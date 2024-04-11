@@ -8,7 +8,6 @@ import 'package:prototype/features/commom_widget/text_reset_password.dart';
 
 class MyLogin extends StatelessWidget {
   const MyLogin({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size; // Lấy kích thước của màn hình
