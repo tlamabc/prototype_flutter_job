@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:prototype/commom_widget/btn_login.dart';
-import 'package:prototype/commom_widget/edt_email_login.dart';
-import 'package:prototype/commom_widget/edt_password_login.dart';
-import 'package:prototype/commom_widget/logo_big.dart';
-import 'package:prototype/commom_widget/logo_small.dart';
-import 'package:prototype/commom_widget/text_reset_password.dart';
+import 'package:prototype/features/commom_widget/btn_login.dart';
+import 'package:prototype/features/commom_widget/edt_email_login.dart';
+import 'package:prototype/features/commom_widget/edt_password_login.dart';
+import 'package:prototype/features/commom_widget/logo_big.dart';
+import 'package:prototype/features/commom_widget/logo_small.dart';
+import 'package:prototype/features/commom_widget/text_reset_password.dart';
 
 class MyLogin extends StatelessWidget {
   const MyLogin({Key? key}) : super(key: key);

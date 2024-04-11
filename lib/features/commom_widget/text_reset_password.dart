@@ -8,7 +8,7 @@ class text_reset_password extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         // Xử lý sự kiện khi container được nhấp
-        // Ví dụ: chuyển hướng đến trang khôi phục mật khẩu
+        print('Container được nhấn');
       },
       child: Container(
         padding: EdgeInsets.all(screenSize.width * 0.01),
