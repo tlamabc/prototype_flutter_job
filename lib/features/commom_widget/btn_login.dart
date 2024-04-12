@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../assessment_page.dart';
+
 class btn_login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -7,8 +9,10 @@ class btn_login extends StatelessWidget {
 
     return OutlinedButton(
       onPressed: () {
-        // Xử lý khi nút được nhấn
-        print('Container được nhấn');
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Assessments()),
+        );
       },
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF559A2A)),
