@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class text_reset_password extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final Size screenSize = MediaQuery.of(context).size; // Lấy kích thước của màn hình
+    final Size screenSize = MediaQuery.of(context).size;
 
     return GestureDetector(
       onTap: () {
@@ -15,7 +15,7 @@ class text_reset_password extends StatelessWidget {
         child: Text(
             "Don't remember your password?",
             textAlign: TextAlign.center, // Căn giữa văn bản
-            style: TextStyle(fontSize: screenSize.height * 0.02), // Đặt kích thước chữ theo tỷ lệ của kích thước màn hình
+            style: TextStyle(fontSize: screenSize.height * 0.015), // Đặt kích thước chữ theo tỷ lệ của kích thước màn hình
           ),
         ),
     );
