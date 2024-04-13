@@ -11,6 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: '', // Đặt title thành chuỗi rỗng để loại bỏ tiêu đề
       theme: ThemeData(
         primarySwatch: Colors.blue,
