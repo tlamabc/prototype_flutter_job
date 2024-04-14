@@ -80,6 +80,10 @@ class _AssessmentsState extends State<Assessments> {
                       ),
                       child: TextField(
                         decoration: InputDecoration(
+                          hintStyle: TextStyle(
+                            color: Colors.green, // Màu xanh lá
+                            fontSize: 14.0, // Kích thước chữ nhỏ
+                          ),
                           isDense: true,
                           hintText: "Search by assessment title...",
                           border: InputBorder.none,
@@ -152,6 +156,7 @@ class _AssessmentsState extends State<Assessments> {
   }
   Widget _assessmentCard(Assessment assessment) {
     return Card(
+      elevation: 4,
       color: Colors.white,
       margin: const EdgeInsets.all(8.0),
       child: Padding(

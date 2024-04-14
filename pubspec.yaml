@@ -53,12 +53,9 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
-  uses-material-design: true  # Không cần dấu phẩy ở cuối dòng này
-
-  assets:
-    - assets/logo.png  # Cú pháp đúng của khai báo assets
-
+   uses-material-design: true
+   assets:
+    - assets/img/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
