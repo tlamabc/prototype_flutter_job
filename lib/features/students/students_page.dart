@@ -1,53 +1,54 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:intl/intl.dart'; // Để định dạng ngày tháng
+import 'package:intl/intl.dart';
 
 class Students {
-  const Students({
+  Students({
     required this.title,
     required this.className,
     required this.date,
     required this.ando,
-
+    required this.vesion,
+    required this.dateVesion,
+    this.isExpanded = false,
   });
+
   final String ando;
   final String title;
   final String className;
   final DateTime date;
+  final List<String> vesion;
+  final List<DateTime> dateVesion;
+  bool isExpanded;
 }
 
-class students extends StatefulWidget {
-  const students({Key? key}) : super(key: key);
+class StudentsPage extends StatefulWidget {
+  const StudentsPage({Key? key}) : super(key: key);
 
   @override
-  State<students> createState() => _StudentsState();
+  State<StudentsPage> createState() => _StudentsPageState();
 }
 
-class _StudentsState extends State<students> {
-  List<Students>  _students = [
-    Students(title: "5D 2024, Học kỳ 2", className: "5D", date: DateTime(2024, 5, 2), ando: "ANDO345"),
-    Students(title: "5D 2024, Học kỳ 2", className: "5D ", date: DateTime(2024, 5, 2),ando: "ANDO345"),
-    Students(title: "5D 2024, Học kỳ 2", className: "5D", date: DateTime(2024, 5, 2),ando: "ANDO345"),
-    Students(title: "5D 2024, Học kỳ 2", className: "5D", date: DateTime(2024, 5, 2),ando: "ANDO345"),
+class _StudentsPageState extends State<StudentsPage> {
+  List<Students> _students = [
+    Students(title: "5D 2024, Học kỳ 2", className: "5D", date: DateTime(2024, 5, 2), ando: "ANDO345", vesion: ["vesion 1", "vesion 2"],dateVesion: [DateTime(2024,04, 14),DateTime(2024, 05, 02)]),
+    Students(title: "5D 2024, Học kỳ 2", className: "5D ", date: DateTime(2024, 5, 2), ando: "ANDO345", vesion: [],dateVesion: []),
+    Students(title: "5D 2024, Học kỳ 2", className: "5D", date: DateTime(2024, 5, 2), ando: "ANDO345", vesion: ["vesion 1"],dateVesion: [DateTime(2024,04, 14),]),
+    Students(title: "5D 2024, Học kỳ 2", className: "5D", date: DateTime(2024, 5, 2), ando: "ANDO345", vesion: ["vesion 1 ", "vesion 2","vesion 3"],dateVesion: [DateTime(2024, 05, 02),DateTime(2024, 05, 02),DateTime(2024, 05, 02)]),
     // ... thêm các dữ liệu khác nếu cần
   ];
 
-  String _searchText = ""; // Để tìm kiếm chức năng
+  String _searchText = "";
 
   @override
   Widget build(BuildContext context) {
-    // Lấy kích thước của màn hình
     Size screenSize = MediaQuery.of(context).size;
-
-    // Kiểm tra nếu là máy tính (web)
     bool isWeb = screenSize.width > 600;
-
-    // Thiết lập kích thước cho widget dựa trên điều kiện
     double widgetWidth = isWeb ? 400 : screenSize.width;
 
     return Scaffold(
-      body:Center(
+      body: Center(
         child: Container(
           height: screenSize.height,
           width: widgetWidth,
@@ -60,33 +61,33 @@ class _StudentsState extends State<students> {
                   margin: EdgeInsets.only(bottom: 50),
                   height: 50,
                   width: widgetWidth,
-                    child: Stack  (
-                      children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: IconButton(
-                            icon: Icon(Icons.arrow_back_ios_outlined),
-                            color: Colors.white,
-                            onPressed: () {
+                  child: Stack(
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: IconButton(
+                          icon: Icon(Icons.arrow_back_ios_outlined),
+                          color: Colors.white,
+                          onPressed: () {
                             Navigator.pop(context);
-                            },
+                          },
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          "STUDENTS",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            "STUDENTS",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 32),
                   child: Container(
@@ -101,7 +102,7 @@ class _StudentsState extends State<students> {
                       decoration: InputDecoration(
                         hintStyle: TextStyle(
                           color: Colors.green.withOpacity(0.6),
-                          fontWeight: FontWeight.w100,// Kích thước chữ nhỏ
+                          fontWeight: FontWeight.w100,
                         ),
                         isDense: true,
                         hintText: "Search by assessment title...",
@@ -110,20 +111,19 @@ class _StudentsState extends State<students> {
                       ),
                       onChanged: (text) {
                         setState(() {
-                          _searchText = text.toLowerCase(); // Tìm kiếm không phân biệt chữ hoa chữ thường
+                          _searchText = text.toLowerCase();
                         });
                       },
                     ),
                   ),
                 ),
-
-
                 Padding(
-                  padding: const EdgeInsets.only(left: 24, right: 24,top: 24,bottom: 0),
+                  padding: const EdgeInsets.only(
+                      left: 24, right: 24, top: 24, bottom: 0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Expanded (
+                      Expanded(
                         flex: 2,
                         child: Container(
                           margin: EdgeInsets.only(left: 5),
@@ -163,9 +163,26 @@ class _StudentsState extends State<students> {
                     ],
                   ),
                 ),
-                // Các thẻ đánh giá hiện có của bạn
-                for (final students in _students)
-                  _studentsCard(students),
+                Padding(
+                  padding: const EdgeInsets.only(left: 16, right: 16, top: 0, bottom: 0),
+                  child: Column(
+                    children: _students.map<Widget>((Students student) {
+                      return MyCustomExpansionPanel(
+                        title: student.title,
+                        ando: student.ando,
+                        className: student.className,
+                        vesion: student.vesion,
+                        dateVesion: student.dateVesion,
+                        isExpanded: student.isExpanded,
+                        onToggle: (bool isExpanded) {
+                          setState(() {
+                            student.isExpanded = isExpanded;
+                          });
+                        },
+                      );
+                    }).toList(),
+                  ),
+                ),
               ],
             ),
           ),
@@ -173,71 +190,190 @@ class _StudentsState extends State<students> {
       ),
     );
   }
-  Widget _studentsCard(Students students) {
-    return Card(
-      elevation: 4,
-      color: Colors.white,
-      margin: const EdgeInsets.all(8.0),
-      child: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Row(
-          children: [
-            Expanded(
-              flex: 2,
-              child: Container(
-                  alignment: Alignment.centerLeft,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(students.title),
-                      Text(students.ando),
-                    ],
-                  )),
-            ),
-            Expanded(
-              flex: 1,
-              child: Container(
-                  alignment: Alignment.center,
-                  child: Text(students.className)),
-            ),
-            Expanded(
-              flex: 1,
-              child: Stack(
-                children: [
-                  ///nếu có dữ liệu véion thì hiện 2 container này lên
-                  // Container(
-                  //   height: 45,
-                  //     alignment: Alignment.center,
-                  //     child: Text(
-                  ///số vesion sẽ hiển thị vào text này
-                  //       '3',
-                  //       style: TextStyle(
-                  //         fontWeight: FontWeight.bold,
-                  //       color: Colors.green,
-                  //     ),
-                  //     ),
-                  //   ),
-                  /// ảnh document hiển thị cùng với số vesion
-                  // Container(
-                  //   alignment: Alignment.center,
-                  //   child: Image.asset('assets/img/icons8_document_64.png',height: 45,color: Colors.green,), // Đường dẫn đến hình ảnh
-                  // ),
-                  Container(
-                    alignment: Alignment.center,
-                    child: Image.asset('assets/img/icons8_plus_50.png',width: 30,color: Colors.amber,), // Đường dẫn đến hình ảnh
+}
+
+class MyCustomExpansionPanel extends StatefulWidget {
+  final String title;
+  final String className;
+  final String ando;
+  final List<String> vesion;
+  final List<DateTime> dateVesion;
+  final bool isExpanded;
+  final Function(bool isExpanded) onToggle;
+
+  const MyCustomExpansionPanel({
+    required this.title,
+    required this.className,
+    required this.ando,
+    required this.vesion,
+    required this.dateVesion,
+    required this.isExpanded,
+    required this.onToggle,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  _MyCustomExpansionPanelState createState() => _MyCustomExpansionPanelState();
+}
+
+class _MyCustomExpansionPanelState extends State<MyCustomExpansionPanel> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        children: [
+          GestureDetector(
+            onTap: widget.vesion.isNotEmpty ? () {
+              widget.onToggle(!widget.isExpanded);
+            } : null,// Nếu vesion rỗng, không cho phép nhấp vào
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8.0),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 2,
+                    blurRadius: 7,
+                    offset: Offset(0, 3),
                   ),
                 ],
               ),
+              margin: const EdgeInsets.only(top: 16),
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: Container(
+                        alignment: Alignment.centerLeft,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(widget.title),
+                            Text(widget.ando),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Text(widget.className),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Stack(
+                        children: [
+                          if (widget.vesion.isNotEmpty) // Kiểm tra nếu có ít nhất 1 phiên bản
+                            Container(
+                              height: 45,
+                              alignment: Alignment.center,
+                              child: Text(
+                                '${widget.vesion.length}', // Hiển thị số
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.green,
+                                ),
+                              ),
+                            ),
+                          if (widget.vesion.isEmpty) // Kiểm tra nếu không có phiên bản
+                            Container(
+                              alignment: Alignment.center,
+                              child: Image.asset(
+                                'assets/img/icons8_plus_50.png',
+                                width: 30,
+                                color: Colors.amber,
+                              ),
+                            ),
+                          if (widget.vesion.isNotEmpty) // Kiểm tra nếu có ít nhất 1 phiên bản
+                            Container(
+                              alignment: Alignment.center,
+                              child: Image.asset(
+                                'assets/img/icons8_document_64.png',
+                                height: 45,
+                                color: Colors.green,
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-          ],
-        ),
+          ),
+          if (widget.isExpanded)  /// item giao diện khi click
+            Container(
+              margin: EdgeInsets.only(top: 3),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(10.0),
+                  bottomRight: Radius.circular(10.0),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 2,
+                    blurRadius: 7,
+                    offset: Offset(0, 3),
+                  ),
+                ],
+                color: Colors.white, // Đặt màu nền của container
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal:10 ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 5,
+                      child: Container(
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: widget.vesion.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            String vesion = widget.vesion[index];
+                            DateTime dateTime = widget.dateVesion[index];
+                            return Container(
+                              child: Row(
+                                children: [
+                                  IconButton(
+                                    icon: Icon(Icons.delete_outline_outlined, size: 18, color: Colors.red,),
+                                    onPressed: () {
+                                      // Xử lý xóa phiên bản ở đây
+                                    },
+                                  ),
+                                  Text(vesion, style: TextStyle(color: Colors.green)),
+                                  SizedBox(width: 10), // Khoảng cách giữa icon xóa và văn bản
+                                  Text(DateFormat('yyyy MM dd').format(dateTime),style: TextStyle(color: Colors.green)),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        alignment: Alignment.centerLeft,
+                        child: Image.asset(
+                          'assets/img/icons8_plus_50.png',
+                          width: 30,
+                          color: Colors.amber,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+        ],
       ),
     );
-  }
-}
-extension DateTimeExtensions on DateTime {
-  String formatDate() {
-    final formatter = DateFormat("dd/MM/yyyy");
-    return formatter.format(this);
   }
 }

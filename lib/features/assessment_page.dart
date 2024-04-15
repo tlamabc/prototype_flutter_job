@@ -85,8 +85,9 @@ class _AssessmentsState extends State<Assessments> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 32),
                   child: Container(
+                    alignment: Alignment.centerLeft,
                     margin: EdgeInsets.only(bottom: 30),
-                    height: 30,
+                    height: 35,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(color: Colors.green),
@@ -94,8 +95,8 @@ class _AssessmentsState extends State<Assessments> {
                     child: TextField(
                       decoration: InputDecoration(
                         hintStyle: TextStyle(
-                          color: Colors.green, // Màu xanh lá
-                          fontSize: 14.0, // Kích thước chữ nhỏ
+                          color: Colors.green.withOpacity(0.6),
+                          fontWeight: FontWeight.w100,
                         ),
                         isDense: true,
                         hintText: "Search by assessment title...",
@@ -104,14 +105,12 @@ class _AssessmentsState extends State<Assessments> {
                       ),
                       onChanged: (text) {
                         setState(() {
-                          _searchText = text
-                              .toLowerCase(); // Tìm kiếm không phân biệt chữ hoa chữ thường
+                          _searchText = text.toLowerCase();
                         });
                       },
                     ),
                   ),
                 ),
-
                 Padding(
                   padding: const EdgeInsets.only(
                       left: 24, right: 24, top: 24, bottom: 0),
@@ -174,7 +173,7 @@ class _AssessmentsState extends State<Assessments> {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => students()),
+          MaterialPageRoute(builder: (context) => StudentsPage()),
         );
       },
       child: Card(
