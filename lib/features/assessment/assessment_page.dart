@@ -1,9 +1,16 @@
-import 'package:flutter/cupertino.dart';
+// file assessments.dart
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:intl/intl.dart';
-import 'package:prototype/features/students/students_page.dart';
+import 'package:prototype/features/assessment/widget_of_assessment/assessment_card_widget.dart';
+import 'package:prototype/features/assessment/widget_of_assessment/header_widget.dart';
+import 'package:prototype/features/assessment/widget_of_assessment/search_bar_widget.dart';
+import 'package:prototype/features/student/student_page.dart';
 
+class Assessments extends StatefulWidget {
+  const Assessments({Key? key}) : super(key: key);
+
+  @override
+  State<Assessments> createState() => _AssessmentsState();
+}
 class Assessment {
   const Assessment({
     required this.title,
@@ -14,13 +21,6 @@ class Assessment {
   final String title;
   final String className;
   final DateTime date;
-}
-
-class Assessments extends StatefulWidget {
-  const Assessments({Key? key}) : super(key: key);
-
-  @override
-  State<Assessments> createState() => _AssessmentsState();
 }
 
 class _AssessmentsState extends State<Assessments> {
@@ -66,50 +66,14 @@ class _AssessmentsState extends State<Assessments> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Container(
-                  color: Colors.green,
-                  margin: EdgeInsets.only(bottom: 50),
-                  height: 50,
-                  width: widgetWidth,
-                  child: Center(
-                    child: Text(
-                      "ASSESSMENTS",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 32),
-                  child: Container(
-                    alignment: Alignment.centerLeft,
-                    margin: EdgeInsets.only(bottom: 30),
-                    height: 35,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: Colors.green),
-                    ),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintStyle: TextStyle(
-                          color: Colors.green.withOpacity(0.6),
-                          fontWeight: FontWeight.w100,
-                        ),
-                        isDense: true,
-                        hintText: "Search by assessment title...",
-                        border: InputBorder.none,
-                        prefixIcon: Icon(Icons.search, color: Colors.green),
-                      ),
-                      onChanged: (text) {
-                        setState(() {
-                          _searchText = text.toLowerCase();
-                        });
-                      },
-                    ),
-                  ),
+                HeaderWidget(),
+                SearchBarWidget(
+                  controller: TextEditingController(),
+                  onChanged: (text) {
+                    setState(() {
+                      _searchText = text.toLowerCase();
+                    });
+                  },
                 ),
                 Padding(
                   padding: const EdgeInsets.only(
@@ -159,7 +123,7 @@ class _AssessmentsState extends State<Assessments> {
                 ),
                 // Các thẻ đánh giá hiện có của bạn
                 for (final assessment in _assessments)
-                  _assessmentCard(assessment),
+                  AssessmentCardWidget(assessment),
               ],
             ),
           ),
@@ -167,51 +131,5 @@ class _AssessmentsState extends State<Assessments> {
       ),
     );
   }
-
-  Widget _assessmentCard(Assessment assessment) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => StudentsPage()),
-        );
-      },
-      child: Card(
-        elevation: 4,
-        color: Colors.white,
-        margin: const EdgeInsets.all(8.0),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            children: [
-              Expanded(
-                flex: 2,
-                child: Container(child: Text(assessment.title)),
-              ),
-              Expanded(
-                flex: 1,
-                child: Container(
-                    alignment: Alignment.center,
-                    child: Text(assessment.className)),
-              ),
-              Expanded(
-                flex: 1,
-                child: Container(
-                  alignment: Alignment.center,
-                  child: Text(assessment.date.formatDateFromAssessment()),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 }
 
-extension DateTimeExtensions on DateTime {
-  String formatDateFromAssessment() {
-    final formatter = DateFormat("dd/MM/yyyy");
-    return formatter.format(this);
-  }
-}

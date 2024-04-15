@@ -1,10 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
+import 'package:prototype/features/student/widget_of_student/header_widget.dart';
+import 'package:prototype/features/student/widget_of_student/search_bar_widget.dart';
 
-class Students {
-  Students({
+import '../scan_document/scanDocument.dart';
+
+class Student {
+  Student({
     required this.title,
     required this.className,
     required this.date,
@@ -23,150 +25,81 @@ class Students {
   bool isExpanded;
 }
 
-class StudentsPage extends StatefulWidget {
-  const StudentsPage({Key? key}) : super(key: key);
+class StudentPage extends StatefulWidget {
+  const StudentPage({Key? key}) : super(key: key);
 
   @override
-  State<StudentsPage> createState() => _StudentsPageState();
+  State<StudentPage> createState() => _StudentPageState();
 }
 
-class _StudentsPageState extends State<StudentsPage> {
-  List<Students> _students = [
-    Students(title: "5D 2024, Học kỳ 2", className: "5D", date: DateTime(2024, 5, 2), ando: "ANDO345", vesion: ["vesion 1", "vesion 2"],dateVesion: [DateTime(2024,04, 14),DateTime(2024, 05, 02)]),
-    Students(title: "5D 2024, Học kỳ 2", className: "5D ", date: DateTime(2024, 5, 2), ando: "ANDO345", vesion: [],dateVesion: []),
-    Students(title: "5D 2024, Học kỳ 2", className: "5D", date: DateTime(2024, 5, 2), ando: "ANDO345", vesion: ["vesion 1"],dateVesion: [DateTime(2024,04, 14),]),
-    Students(title: "5D 2024, Học kỳ 2", className: "5D", date: DateTime(2024, 5, 2), ando: "ANDO345", vesion: ["vesion 1 ", "vesion 2","vesion 3"],dateVesion: [DateTime(2024, 05, 02),DateTime(2024, 05, 02),DateTime(2024, 05, 02)]),
-    // ... thêm các dữ liệu khác nếu cần
-  ];
-
+class _StudentPageState extends State<StudentPage> {
   String _searchText = "";
+
+  // Define your list of Student objects here
+  List<Student> _students = [
+    Student(
+      title: "5D 2024, Học kỳ 2",
+      className: "5D",
+      date: DateTime(2024, 5, 2),
+      ando: "ANDO345",
+      vesion: ["vesion 1", "vesion 2"],
+      dateVesion: [DateTime(2024, 04, 14), DateTime(2024, 05, 02)],
+    ),
+    Student(
+      title: "5D 2024, Học kỳ 2",
+      className: "5D ",
+      date: DateTime(2024, 5, 2),
+      ando: "ANDO345",
+      vesion: [],
+      dateVesion: [],
+    ),
+    Student(
+      title: "5D 2024, Học kỳ 2",
+      className: "5D",
+      date: DateTime(2024, 5, 2),
+      ando: "ANDO345",
+      vesion: ["vesion 1"],
+      dateVesion: [DateTime(2024, 04, 14)],
+    ),
+    Student(
+      title: "5D 2024, Học kỳ 2",
+      className: "5D",
+      date: DateTime(2024, 5, 2),
+      ando: "ANDO345",
+      vesion: ["vesion 1 ", "vesion 2", "vesion 3"],
+      dateVesion: [
+        DateTime(2024, 05, 02),
+        DateTime(2024, 05, 02),
+        DateTime(2024, 05, 02)
+      ],
+    ),
+    // Add more Student objects as needed
+  ];
 
   @override
   Widget build(BuildContext context) {
-    Size screenSize = MediaQuery.of(context).size;
-    bool isWeb = screenSize.width > 600;
-    double widgetWidth = isWeb ? 400 : screenSize.width;
-
     return Scaffold(
       body: Center(
         child: Container(
-          height: screenSize.height,
-          width: widgetWidth,
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
           color: Color(0xFFF6F6F6),
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Container(
-                  color: Colors.green,
-                  margin: EdgeInsets.only(bottom: 50),
-                  height: 50,
-                  width: widgetWidth,
-                  child: Stack(
-                    children: [
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: IconButton(
-                          icon: Icon(Icons.arrow_back_ios_outlined),
-                          color: Colors.white,
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          "STUDENTS",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 32),
-                  child: Container(
-                    alignment: Alignment.centerLeft,
-                    margin: EdgeInsets.only(bottom: 30),
-                    height: 35,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: Colors.green),
-                    ),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintStyle: TextStyle(
-                          color: Colors.green.withOpacity(0.6),
-                          fontWeight: FontWeight.w100,
-                        ),
-                        isDense: true,
-                        hintText: "Search by assessment title...",
-                        border: InputBorder.none,
-                        prefixIcon: Icon(Icons.search, color: Colors.green),
-                      ),
-                      onChanged: (text) {
-                        setState(() {
-                          _searchText = text.toLowerCase();
-                        });
-                      },
-                    ),
-                  ),
+                HeaderWidget(),
+                SearchBarWidget(
+                  onChanged: (text) {
+                    setState(() {
+                      _searchText = text.toLowerCase();
+                    });
+                  },
                 ),
                 Padding(
                   padding: const EdgeInsets.only(
-                      left: 24, right: 24, top: 24, bottom: 0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: Container(
-                          margin: EdgeInsets.only(left: 5),
-                          child: Text(
-                            'Student',
-                            style: TextStyle(
-                              color: Colors.green,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Container(
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Class',
-                            style: TextStyle(
-                              color: Colors.green,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Container(
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Upload',
-                            style: TextStyle(
-                              color: Colors.green,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 16, right: 16, top: 0, bottom: 0),
+                      left: 16, right: 16, top: 0, bottom: 0),
                   child: Column(
-                    children: _students.map<Widget>((Students student) {
+                    children: _students.map<Widget>((student) {
                       return MyCustomExpansionPanel(
                         title: student.title,
                         ando: student.ando,
@@ -223,9 +156,11 @@ class _MyCustomExpansionPanelState extends State<MyCustomExpansionPanel> {
       child: Column(
         children: [
           GestureDetector(
-            onTap: widget.vesion.isNotEmpty ? () {
+            onTap: widget.vesion.isNotEmpty
+                ? () {
               widget.onToggle(!widget.isExpanded);
-            } : null,// Nếu vesion rỗng, không cho phép nhấp vào
+            }
+                : null, // Nếu vesion rỗng, không cho phép nhấp vào
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8.0),
@@ -306,7 +241,7 @@ class _MyCustomExpansionPanelState extends State<MyCustomExpansionPanel> {
               ),
             ),
           ),
-          if (widget.isExpanded)  /// item giao diện khi click
+          if (widget.isExpanded) /// item giao diện khi click
             Container(
               margin: EdgeInsets.only(top: 3),
               decoration: BoxDecoration(
@@ -325,7 +260,7 @@ class _MyCustomExpansionPanelState extends State<MyCustomExpansionPanel> {
                 color: Colors.white, // Đặt màu nền của container
               ),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal:10 ),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Row(
                   children: [
                     Expanded(
@@ -359,15 +294,21 @@ class _MyCustomExpansionPanelState extends State<MyCustomExpansionPanel> {
 
                     Expanded(
                       flex: 1,
-                      child: Container(
-                        alignment: Alignment.centerLeft,
-                        child: Image.asset(
-                          'assets/img/icons8_plus_50.png',
-                          width: 30,
-                          color: Colors.amber,
+                      child: GestureDetector(
+                        onTap: () {
+                          ScanDocument();
+                         },
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          child: Image.asset(
+                            'assets/img/icons8_plus_50.png',
+                            width: 30,
+                            color: Colors.amber,
+                          ),
                         ),
                       ),
                     ),
+
                   ],
                 ),
               ),
