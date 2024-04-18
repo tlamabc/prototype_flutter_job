@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:prototype/features/student/widget_of_student/dialog_delete_vesion.dart';
 import 'package:prototype/features/student/widget_of_student/header_widget.dart';
 import 'package:prototype/features/student/widget_of_student/search_bar_widget.dart';
 
@@ -218,6 +219,7 @@ class _MyCustomExpansionPanelState extends State<MyCustomExpansionPanel> {
                           if (widget.vesion.isEmpty) // Kiểm tra nếu không có phiên bản
                             Container(
                               alignment: Alignment.center,
+
                               child: Image.asset(
                                 'assets/img/icons8_plus_50.png',
                                 width: 30,
@@ -279,6 +281,7 @@ class _MyCustomExpansionPanelState extends State<MyCustomExpansionPanel> {
                                     icon: Icon(Icons.delete_outline_outlined, size: 18, color: Colors.red,),
                                     onPressed: () {
                                       // Xử lý xóa phiên bản ở đây
+                                      DeleteConfirmationDialog.show(context);
                                     },
                                   ),
                                   Text(vesion, style: TextStyle(color: Colors.green)),
@@ -296,8 +299,11 @@ class _MyCustomExpansionPanelState extends State<MyCustomExpansionPanel> {
                       flex: 1,
                       child: GestureDetector(
                         onTap: () {
-                          ScanDocument();
-                         },
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => ScanDocument()),
+                          );
+                        },
                         child: Container(
                           alignment: Alignment.centerLeft,
                           child: Image.asset(

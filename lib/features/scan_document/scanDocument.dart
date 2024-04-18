@@ -1,63 +1,75 @@
 import 'dart:io';
-import 'package:document_scanner_flutter/configs/configs.dart';
-import 'package:document_scanner_flutter/document_scanner_flutter.dart';
-import 'package:flutter/gestures.dart';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
+
 
 class ScanDocument extends StatefulWidget {
   @override
-  _ScanDocumentState createState() => _ScanDocumentState();
+  _MyAppState createState() => _MyAppState();
 }
 
-class _ScanDocumentState extends State<ScanDocument> {
-  Future<void> _scanDoc() async {
-    try {
-      // Launch the scanner specifying source as CAMERA (or modify for gallery)
-      final scannedDoc = await DocumentScannerFlutter.launch(source: ScannerFileSource.CAMERA);
+class _MyAppState extends State<ScanDocument> {
+  File? file;
+  ImagePicker image = ImagePicker();
+  getImage() async {
+    var img = await image.pickImage(source: ImageSource.gallery);
 
-      if (scannedDoc != null) {
-        // Document scanned successfully!
-        // Handle the scanned document file (e.g., display, save, process further)
-        print('Scanned document saved at: ${scannedDoc.path}');
-
-        // Example: Save the scanned document to a specific location
-        final directory = await Directory('your/desired/directory');
-        if (!directory.existsSync()) {
-          await directory.create(recursive: true);
-        }
-        final newFile = await scannedDoc.copy('${directory.path}/scanned_document.jpg');
-        print('Document saved to: ${newFile.path}');
-      }
-    } on PlatformException catch (e) {
-      // Handle platform-specific errors
-      print('Platform error: ${e.message}');
-    } catch (e) {
-      // Handle other unexpected errors
-      print('Error: ${e.toString()}');
-    }
+    setState(() {
+      file = File(img!.path);
+    });
   }
 
+  Future<File?> getImagecam() async {
+    var img = await image.pickImage(source: ImageSource.camera);
+    return File(img!.path);
+  }
+
+  Future<Uint8List> _generatePdf(PdfPageFormat format, file) async {
+    final pdf = pw.Document(version: PdfVersion.pdf_1_5, compress: true);
+    final font = await PdfGoogleFonts.nunitoExtraLight();
+
+    final showimage = pw.MemoryImage(file.readAsBytesSync());
+
+    pdf.addPage(
+      pw.Page(
+        pageFormat: format,
+        build: (context) {
+          return pw.Center(
+            child: pw.Image(showimage, fit: pw.BoxFit.contain),
+          );
+        },
+      ),
+    );
+
+    return pdf.save();
+  }
+//SỬA CHỖ NI TRƯỚC NGHE
+  
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Document Scanner'),
-      ),
-      body: Center(
-        child: Expanded(
-          flex: 1,
-          child: GestureDetector(
-            onTap: _scanDoc, // Call the _scanDoc function on tap
-            child: Container(
-              alignment: Alignment.centerLeft,
-              child: Image.asset(
-                'assets/img/icons8_plus_50.png',
-                width: 30,
-                color: Colors.amber,
-              ),
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text(" SCAN PDF"),
+          actions: [
+            IconButton(
+              onPressed: getImage,
+              icon: Icon(Icons.image),
             ),
-          ),
+            IconButton(
+              onPressed: getImagecam,
+              icon: Icon(Icons.camera),
+            ),
+          ],
+        ),
+        body: file == null
+            ? Container()
+            : PdfPreview(
+          build: (format) => _generatePdf(format, file),
         ),
       ),
     );
